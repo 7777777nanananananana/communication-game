@@ -7,25 +7,24 @@
 <style>
 body {
     font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
-    background: #e8e8e8;
+    background: #ccc;
     margin: 0;
-    padding: 24px 16px;
+    padding: 20px 16px;
 }
 
 .print-btn {
     display: block;
-    margin: 0 auto 20px;
-    padding: 12px 32px;
-    background: #1a3a6b;
+    margin: 0 auto 16px;
+    padding: 10px 28px;
+    background: #444;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 15px;
+    border-radius: 6px;
+    font-size: 14px;
     font-family: inherit;
     cursor: pointer;
-    transition: background 0.2s;
 }
-.print-btn:hover { background: #2a5a9b; }
+.print-btn:hover { background: #222; }
 
 /* A4ページ */
 .page {
@@ -33,269 +32,306 @@ body {
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
-    padding: 14mm 16mm 12mm;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    padding: 12mm 14mm 10mm;
     box-sizing: border-box;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
 }
 
-/* ヘッダー */
-.header {
-    text-align: center;
-    border-bottom: 2.5px solid #1a3a6b;
-    padding-bottom: 5mm;
-    margin-bottom: 6mm;
+/* タイトル行 */
+.doc-title {
+    font-size: 10pt;
+    margin-bottom: 4px;
+    text-decoration: underline;
+    color: #111;
 }
-.title {
-    font-size: 15pt;
-    font-weight: bold;
-    margin: 0 0 3px;
-    color: #1a1a1a;
-}
-.subtitle {
+
+/* 発表形式行 */
+.format-row {
     font-size: 9pt;
-    color: #555;
-    margin: 0;
+    margin-bottom: 6mm;
+    color: #111;
 }
+.format-row label { margin-right: 10px; }
+.cb { display: inline-block; width: 10px; height: 10px; border: 1px solid #555; margin-right: 2px; vertical-align: middle; }
+.cb.checked::after { content: "✓"; font-size: 8pt; line-height: 1; display: block; margin-top: -1px; }
 
-/* テーブル */
-table {
+/* メインテーブル */
+.storyboard {
     width: 100%;
     border-collapse: collapse;
-    font-size: 8.5pt;
-    line-height: 1.5;
+    table-layout: fixed;
 }
-th {
-    background: #1a3a6b;
-    color: white;
-    padding: 5px 7px;
+
+/* ヘッダー行 */
+.storyboard thead tr th {
+    background: #d0d0d0;
+    border: 1.2px solid #555;
     text-align: center;
-    font-size: 9pt;
-    border: 1px solid #1a3a6b;
-}
-td {
-    border: 1px solid #aaa;
-    padding: 6px 7px;
-    vertical-align: top;
-}
-
-/* 列幅 */
-.col-num  { width: 9mm;  text-align: center; font-weight: bold; font-size: 11pt; background: #f0f2f5; }
-.col-place{ width: 17mm; text-align: center; font-size: 8pt; color: #444; }
-.col-vis  { width: 26mm; text-align: center; }
-.col-dlg  { /* 自動 */ }
-.col-dir  { width: 42mm; font-size: 8pt; }
-
-.emoji-big   { font-size: 20pt; display: block; line-height: 1.2; }
-.emoji-label { font-size: 7pt; color: #666; }
-
-.spk { font-weight: bold; }
-
-/* 行カラー */
-.r-setup  td { background: #ffffff; }
-.r-inner  td { background: #fffdf0; }
-.r-bad    td { background: #fff5f5; }
-.r-fail   td { background: #fff0f0; }
-.r-trans  td { background: #f0f0ff; text-align: center; font-style: italic; color: #555; padding: 5px; }
-.r-good   td { background: #f0fff4; }
-.r-win    td { background: #e6ffe8; }
-
-/* バッジ */
-.badge {
-    display: inline-block;
-    padding: 1px 7px;
-    border-radius: 3px;
-    font-size: 7.5pt;
-    font-weight: bold;
-    margin-bottom: 3px;
-}
-.b-bad  { background: #fde; border: 1px solid #f88; color: #b00; }
-.b-good { background: #dfd; border: 1px solid #6c6; color: #050; }
-.b-info { background: #def; border: 1px solid #8ae; color: #035; }
-
-/* フッター */
-.footer {
-    margin-top: 5mm;
-    border: 1.5px solid #1a3a6b;
-    border-radius: 5px;
-    padding: 4mm 5mm;
-    background: #f4f7ff;
-}
-.footer-title {
-    font-weight: bold;
+    padding: 5px 0;
     font-size: 9.5pt;
-    color: #1a3a6b;
+    font-weight: bold;
+}
+.th-visual { width: 58%; }
+.th-desc   { width: 42%; }
+
+/* セル共通 */
+.storyboard tbody tr td {
+    border: 1.2px solid #555;
+    vertical-align: top;
+    padding: 0;
+    height: 58mm;
+}
+
+/* 左列（絵・場等）*/
+.td-visual {
+    border-right: 1.2px dashed #888 !important;
+    padding: 6px 8px;
+    font-size: 9pt;
+    line-height: 1.6;
+    color: #111;
+}
+
+/* 右列（説明）*/
+.td-desc {
+    padding: 6px 8px;
+    font-size: 8.5pt;
+    line-height: 1.7;
+    color: #111;
+}
+
+/* 絵パネル内スタイル */
+.panel-place {
+    font-size: 8pt;
+    color: #555;
     margin-bottom: 4px;
 }
-.footer-body {
+
+.panel-chars {
+    font-size: 26pt;
+    line-height: 1.2;
+    margin: 4px 0;
+}
+
+.panel-balloon {
+    border: 1px solid #888;
+    border-radius: 6px;
+    padding: 3px 7px;
+    font-size: 8.5pt;
+    display: inline-block;
+    margin: 3px 0;
+    background: #fafafa;
+    max-width: 100%;
+}
+
+.panel-thought {
+    border: 1px dashed #aaa;
+    border-radius: 10px;
+    padding: 3px 7px;
+    font-size: 8pt;
+    color: #555;
+    font-style: italic;
+    display: inline-block;
+    margin: 2px 0;
+    background: #f8f8f8;
+}
+
+.panel-arrow {
+    text-align: center;
+    font-size: 14pt;
+    color: #555;
+    margin: 3px 0;
+    display: block;
+}
+
+.panel-result {
+    font-weight: bold;
+    font-size: 9pt;
+    margin-top: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+}
+.result-bad  { color: #b00; background: #fee; border: 1px solid #f99; }
+.result-good { color: #050; background: #efe; border: 1px solid #9c9; }
+
+.compare-box {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+.compare-col {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 8pt;
+    background: #fafafa;
+}
+.compare-col.bad-col  { border-color: #f99; background: #fff5f5; }
+.compare-col.good-col { border-color: #9c9; background: #f5fff5; }
+.compare-col .col-head { font-weight: bold; font-size: 8pt; margin-bottom: 3px; }
+
+/* 説明列内スタイル */
+.desc-head {
+    font-weight: bold;
+    font-size: 9pt;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+    color: #1a1a6b;
+}
+
+/* 補足説明エリア */
+.hosoku {
+    margin-top: 4mm;
+    font-size: 8.5pt;
+    line-height: 1.7;
+    color: #111;
+}
+.hosoku-label {
+    font-weight: bold;
+    font-size: 9pt;
+    margin-bottom: 3px;
+}
+.hosoku-body {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px 8px;
+    min-height: 14mm;
+    background: #fafafa;
     font-size: 8.5pt;
     line-height: 1.7;
 }
 
-/* 印刷時 */
+/* 印刷 */
 @media print {
     @page { size: A4; margin: 0; }
     body   { background: white; padding: 0; }
-    .page  { box-shadow: none; width: 100%; min-height: auto; }
+    .page  { box-shadow: none; width: 100%; }
     .print-btn { display: none; }
 }
 </style>
 </head>
 <body>
 
-<button class="print-btn" onclick="window.print()">🖨️　PDFとして保存（印刷）</button>
+<button class="print-btn" onclick="window.print()">🖨️ PDFとして保存（印刷）</button>
 
 <div class="page">
 
-    <div class="header">
-        <div class="title">コミュニケーション改善 絵コンテ　〜Uさんの挑戦〜</div>
-        <div class="subtitle">課題：コミュニケーションが上手くいっていない状況の表現とその解決策の説明</div>
+    <div class="doc-title">コミュニケーションスキル 2026 中間発表　絵コンテ（20260623 発表）</div>
+
+    <div class="format-row">
+        当日の発表形式：
+        <label><span class="cb"></span>動画</label>
+        <label><span class="cb checked"></span>寸劇</label>
+        <label><span class="cb"></span>プレゼン</label>
+        <label><span class="cb"></span>その他（　　　　）</label>
     </div>
 
-    <table>
+    <table class="storyboard">
         <thead>
             <tr>
-                <th class="col-num">No.</th>
-                <th class="col-place">場所</th>
-                <th class="col-vis">場面（登場人物）</th>
-                <th class="col-dlg">セリフ</th>
-                <th class="col-dir">ト書き・説明</th>
+                <th class="th-visual">絵・場等</th>
+                <th class="th-desc">説明</th>
             </tr>
         </thead>
         <tbody>
 
-            <!-- 1: 状況設定 -->
-            <tr class="r-setup">
-                <td class="col-num">1</td>
-                <td class="col-place">オフィス<br>会議室</td>
-                <td class="col-vis">
-                    <span class="emoji-big">👔🧑</span>
-                    <span class="emoji-label">上司・Uさん</span>
+            <!-- パネル1：状況設定 -->
+            <tr>
+                <td class="td-visual">
+                    <div class="panel-place">📍 オフィス会議室　月次企画会議</div>
+                    <div class="panel-chars">👔　　🧑</div>
+                    <div style="font-size:8pt;color:#555;margin-bottom:4px;">上司　　　Uさん</div>
+                    <div class="panel-balloon">上司：「今月の新企画について、Uさんから提案があると聞きました。どうぞ。」</div><br>
+                    <div class="panel-thought">Uさん（心の声）：「やばい…緊張する。いつもの語録で乗り切るか！」</div>
                 </td>
-                <td class="col-dlg">
-                    <span class="spk">上司：</span>「今月の新企画について、Uさんから提案があると聞きました。どうぞ。」
-                </td>
-                <td class="col-dir">
-                    <span class="badge b-info">状況設定</span><br>
-                    月次企画会議。上司がUさんに発言を促す。
-                </td>
-            </tr>
-
-            <!-- 2: 心の声 -->
-            <tr class="r-inner">
-                <td class="col-num">2</td>
-                <td class="col-place">同</td>
-                <td class="col-vis">
-                    <span class="emoji-big">🧑💭</span>
-                    <span class="emoji-label">Uさん（心の声）</span>
-                </td>
-                <td class="col-dlg">
-                    <span class="spk">Uさん（心の声）：</span>「やばい…緊張する。いつもの語録で乗り切るか！」
-                </td>
-                <td class="col-dir">
-                    Uさんのモノローグ。ASD的特性から、緊張すると某ネット有名人の語録を使ってしまう。
+                <td class="td-desc">
+                    <div class="desc-head">【状況設定】</div>
+                    Uさんは少しASDっぽい特性があり、緊張すると某ネット有名人の語録でコミュニケーションをとってしまう。<br><br>
+                    今日は月次企画会議で、上司から新企画の提案を求められた。
                 </td>
             </tr>
 
-            <!-- 3: 問題発言 -->
-            <tr class="r-bad">
-                <td class="col-num">3</td>
-                <td class="col-place">同</td>
-                <td class="col-vis">
-                    <span class="emoji-big">🧑</span>
-                    <span class="emoji-label">Uさん</span>
+            <!-- パネル2：問題発生 -->
+            <tr>
+                <td class="td-visual">
+                    <div class="panel-chars">🧑</div>
+                    <div class="panel-balloon">Uさん：「やらないか？」</div>
+                    <span class="panel-arrow">↓</span>
+                    <div class="panel-chars" style="font-size:20pt;">👔😤　😶😶</div>
+                    <div style="font-size:8pt;color:#555;margin-bottom:4px;">上司（怒）　同僚（困惑）</div>
+                    <div class="panel-balloon">上司：「Uさん、真剣にお願いします。」</div>
                 </td>
-                <td class="col-dlg">
-                    <span class="spk">Uさん：</span>「やらないか？」
-                </td>
-                <td class="col-dir">
-                    <span class="badge b-bad">❌ 問題場面</span><br>
-                    フォーマルな場で某ネット有名人の語録を使用。意図が全く伝わらない。
-                </td>
-            </tr>
-
-            <!-- 4: 反応 -->
-            <tr class="r-fail">
-                <td class="col-num">4</td>
-                <td class="col-place">同</td>
-                <td class="col-vis">
-                    <span class="emoji-big">👔😶</span>
-                    <span class="emoji-label">上司・同僚</span>
-                </td>
-                <td class="col-dlg">
-                    <span class="spk">上司：</span>「え……？」<br>
-                    <span class="spk">同僚：</span>「（ひそひそ）ちょっと、何言ってんの……？」
-                </td>
-                <td class="col-dir">
-                    上司・同僚が困惑。会議の雰囲気が悪化する。
+                <td class="td-desc">
+                    <div class="desc-head">【問題場面 ❌】</div>
+                    フォーマルな場で某ネット有名人の語録を使用。<br><br>
+                    意図が全く伝わらず、上司・同僚が困惑。上司に注意され、提案の機会も失う。<br><br>
+                    → <strong>コミュニケーション失敗</strong>
                 </td>
             </tr>
 
-            <!-- 5: 失敗 -->
-            <tr class="r-fail">
-                <td class="col-num">5</td>
-                <td class="col-place">同</td>
-                <td class="col-vis">
-                    <span class="emoji-big">👔😤</span>
-                    <span class="emoji-label">上司（注意）</span>
+            <!-- パネル3：解決策 -->
+            <tr>
+                <td class="td-visual">
+                    <div class="panel-chars">🧑📋</div>
+                    <div class="panel-balloon">Uさん：「ぜひ取り組ませていただきたいと思います。SNS活用によるマーケティング強化を提案します。」</div>
+                    <span class="panel-arrow">↓</span>
+                    <div class="panel-chars" style="font-size:20pt;">👔😊</div>
+                    <div class="panel-balloon">上司：「具体的でわかりやすいですね。素晴らしい！」</div>
                 </td>
-                <td class="col-dlg">
-                    <span class="spk">上司：</span>「Uさん、ここは会議室ですよ。真剣にお願いします。」
-                </td>
-                <td class="col-dir">
-                    上司に注意される。信頼を失い、提案の機会も消滅。<br>→ コミュニケーション失敗
-                </td>
-            </tr>
-
-            <!-- 転換 -->
-            <tr class="r-trans">
-                <td colspan="5">▼　では、その場に応じた適切なコミュニケーションをとると…　▼</td>
-            </tr>
-
-            <!-- 6: 解決策 -->
-            <tr class="r-good">
-                <td class="col-num">6</td>
-                <td class="col-place">オフィス<br>会議室</td>
-                <td class="col-vis">
-                    <span class="emoji-big">🧑📋</span>
-                    <span class="emoji-label">Uさん</span>
-                </td>
-                <td class="col-dlg">
-                    <span class="spk">Uさん：</span>「ぜひ取り組ませていただきたいと思います。SNS活用によるマーケティング強化を提案します。詳細資料をご覧ください。」
-                </td>
-                <td class="col-dir">
-                    <span class="badge b-good">✅ 解決策</span><br>
-                    敬語＋具体的な内容で発言。資料も事前に準備。
+                <td class="td-desc">
+                    <div class="desc-head">【解決策 ✅】</div>
+                    <strong>対策：その場に応じた適切なコミュニケーション</strong><br><br>
+                    ① 敬語を使う<br>
+                    　（「〜させていただきます」等）<br>
+                    ② 具体的な内容を添える<br>
+                    　（数字・根拠・提案内容）<br>
+                    ③ 事前に資料を準備する<br><br>
+                    → <strong>コミュニケーション成功</strong>
                 </td>
             </tr>
 
-            <!-- 7: 成功 -->
-            <tr class="r-win">
-                <td class="col-num">7</td>
-                <td class="col-place">同</td>
-                <td class="col-vis">
-                    <span class="emoji-big">👔😊</span>
-                    <span class="emoji-label">上司（好反応）</span>
+            <!-- パネル4：比較まとめ -->
+            <tr>
+                <td class="td-visual">
+                    <div style="font-size:8.5pt;font-weight:bold;margin-bottom:4px;">【Before / After 比較】</div>
+                    <div class="compare-box">
+                        <div class="compare-col bad-col">
+                            <div class="col-head">❌ Before</div>
+                            <div style="font-size:14pt;text-align:center;">🧑</div>
+                            「やらないか？」<br>
+                            <span style="font-size:7.5pt;color:#888;">（某語録）</span><br><br>
+                            👔「え……？」<br>
+                            → 信頼を失う
+                        </div>
+                        <div class="compare-col good-col">
+                            <div class="col-head">✅ After</div>
+                            <div style="font-size:14pt;text-align:center;">🧑</div>
+                            「ぜひ取り組ませていただきます」<br>
+                            <span style="font-size:7.5pt;color:#888;">（敬語＋具体的内容）</span><br><br>
+                            👔「素晴らしい！」<br>
+                            → 信頼を得る
+                        </div>
+                    </div>
                 </td>
-                <td class="col-dlg">
-                    <span class="spk">上司：</span>「具体的でわかりやすいですね。素晴らしい。では詳しく説明をお願いします。」
-                </td>
-                <td class="col-dir">
-                    上司が好意的に受け取る。<br>→ コミュニケーション成功
+                <td class="td-desc">
+                    <div class="desc-head">【解決策のまとめ】</div>
+                    ASD的特性があっても、<strong>場面を意識した準備</strong>と<strong>言葉の選択</strong>により適切なコミュニケーションが可能になる。<br><br>
+                    フォーマルな場では：<br>
+                    ・ネットミームや普段使いの語録は使わない<br>
+                    ・敬語＋具体的な内容でアピール<br>
+                    ・事前準備で緊張を軽減する
                 </td>
             </tr>
 
         </tbody>
     </table>
 
-    <div class="footer">
-        <div class="footer-title">📌 解決策のポイント</div>
-        <div class="footer-body">
-            <strong>【問題】</strong>Uさんは緊張するとフォーマルな場でも某ネット有名人の語録を使ってしまい、意図が伝わらず信頼を失う。<br>
-            <strong>【対策】</strong>
-            ① <strong>その場に応じた敬語を使う</strong>（「〜させていただきます」「〜と思います」等）&emsp;
-            ② <strong>具体的な内容を添える</strong>（数字・資料・根拠）&emsp;
-            ③ <strong>事前に準備する</strong>（資料・想定問答）<br>
-            ASD的特性があっても、場面を意識した準備と言葉の選択により、適切なコミュニケーションが可能になる。
+    <div class="hosoku">
+        <div class="hosoku-label">補足説明</div>
+        <div class="hosoku-body">
+            Uさんのようにコミュニケーションに難しさを感じる人でも、「どの場面でどんな言葉が適切か」を事前に考え準備しておくことで、フォーマルな場面でも円滑なコミュニケーションができる。大切なのは「その場のコンテクストを読む力」を意識的に身につけること。
         </div>
     </div>
 
