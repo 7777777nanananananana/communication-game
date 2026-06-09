@@ -302,7 +302,7 @@ body {
     <div class="hud">
         <div class="scene-label" id="scene-label">シーン1</div>
         <div class="progress-dots" id="progress-dots"></div>
-        <div class="score-hud">スコア <span id="score-val">0</span> / 3</div>
+        <div class="score-hud">スコア <span id="score-val">0</span> / 1</div>
     </div>
 
     <div class="location-tag" id="location-tag"></div>
@@ -382,76 +382,6 @@ const SCENES = [
       }
     ]
   },
-  {
-    title: "シーン2：就職面接",
-    location: "📍 企業の面接室　最終面接",
-    bg: "linear-gradient(180deg,#081a08 0%,#050e05 65%,#030803 100%)",
-    chars: { L: { emoji:"👨‍💼", name:"面接官" }, R: { emoji:"🧑", name:"Uさん" } },
-    dialogues: [
-      { spk:"面接官", side:"L", text:"本日はお越しいただきありがとうございます。まず、当社を志望された理由をお聞かせください。" },
-      { spk:"Uさん（心の声）", side:"R", text:"王道の質問だ…すごく緊張する…\n何か言わないと！", internal:true },
-    ],
-    choiceQ: "⚡ 志望動機を答えよう！",
-    choices: [
-      {
-        type:"bad", label:"「はい、論破」", sub:"某ネット有名人の語録で返す",
-        after:[
-          { spk:"Uさん",  side:"R", text:"はい、論破。" },
-          { spk:"面接官", side:"L", text:"……？　何を、論破されたのでしょうか？" },
-          { spk:"Uさん",  side:"R", text:"あっ、えーと……その……すみません……" },
-          { spk:"面接官", side:"L", text:"（メモを取りながら）志望動機は具体的にお答えいただく必要があります……" },
-        ],
-        explain:"面接は自分の意欲・適性・人柄をアピールする重要な場です。\n関係のない語録を使うと、コミュニケーション能力に深刻な疑問を\n持たれてしまいます。",
-        tip: null
-      },
-      {
-        type:"good", label:"「御社の○○に魅力を感じ…」", sub:"事前に準備した志望動機を話す",
-        after:[
-          { spk:"Uさん",  side:"R", text:"御社の技術開発への積極投資と、チームワークを重視する社風に強く魅力を感じました。私の分析力を活かして貢献できると考えています。" },
-          { spk:"面接官", side:"L", text:"具体的に、弊社のどの点に注目されましたか？" },
-          { spk:"Uさん",  side:"R", text:"特に昨年発表された○○プロジェクトの実績を拝見し、データドリブンな意思決定を大切にされていると感じました。" },
-          { spk:"面接官", side:"L", text:"よく調べていただいていますね。具体的で好印象です。" },
-        ],
-        explain:"",
-        tip:"💡 ポイント：面接前に企業研究をしっかり行い、「なぜこの会社でなければならないか」を具体的なエピソードと共に話せるよう準備しましょう。"
-      }
-    ]
-  },
-  {
-    title: "シーン3：ゼミの質疑応答",
-    location: "📍 大学のゼミ室　研究発表後",
-    bg: "linear-gradient(180deg,#180a20 0%,#0f0515 65%,#080310 100%)",
-    chars: { L: { emoji:"👨‍🏫", name:"教授" }, R: { emoji:"🧑", name:"Uさん" } },
-    dialogues: [
-      { spk:"教授", side:"L", text:"発表お疲れ様でした。Uさんの研究について質問です。この研究の限界点はどのようにお考えですか？" },
-      { spk:"Uさん（心の声）", side:"R", text:"むずかしい質問…批判されてる気がする…\nどうしよう！", internal:true },
-    ],
-    choiceQ: "⚡ 教授の質問、どう返す？",
-    choices: [
-      {
-        type:"bad", label:"「なんでそういうことを言うんですか」", sub:"某ネット有名人の語録風に反発する",
-        after:[
-          { spk:"Uさん",  side:"R", text:"なんでそういうことを言うんですか……！" },
-          { spk:"教授",   side:"L", text:"これは学術的な議論ですよ？批判的思考は研究に不可欠です。" },
-          { spk:"ゼミ生", side:"L", text:"（ざわざわ……）" },
-          { spk:"教授",   side:"L", text:"もう少し落ち着いて、研究者として向き合ってください。" },
-        ],
-        explain:"学術の場では、批判や質問は研究をより良くするためのものです。\n防衛的・感情的な反応は研究者としての信頼を大きく損ないます。",
-        tip: null
-      },
-      {
-        type:"good", label:"「ご指摘の通り、〜という限界があります」", sub:"冷静に自己分析して答える",
-        after:[
-          { spk:"Uさん", side:"R", text:"ご指摘ありがとうございます。本研究の限界としては、サンプル数が限られている点と、対象地域が特定の地域に偏っている点が挙げられます。" },
-          { spk:"教授",  side:"L", text:"よく自己分析できていますね。それを踏まえた今後の展望は？" },
-          { spk:"Uさん", side:"R", text:"次の研究ではサンプルを拡大し、複数地域での比較研究を行いたいと考えています。" },
-          { spk:"教授",  side:"L", text:"素晴らしい。研究の方向性がはっきりしていますね。" },
-        ],
-        explain:"",
-        tip:"💡 ポイント：質問や批判を「攻撃」ではなく「改善のヒント」として受け取りましょう。「ご指摘ありがとうございます」と感謝から始めると、冷静さと誠実さが伝わります。"
-      }
-    ]
-  }
 ];
 
 /* ========== ゲーム状態 ========== */
@@ -672,14 +602,11 @@ function showEnd() {
     showScreen('end-screen');
     setTimeout(() => {
         const sc = document.getElementById('end-score');
-        if (score === 3) {
-            sc.innerHTML = `⭐ ${score} / 3 ⭐<br><span style="font-size:18px;color:#ff9">パーフェクト！</span>`;
+        if (score === 1) {
+            sc.innerHTML = `⭐ ${score} / 1 ⭐<br><span style="font-size:18px;color:#ff9">パーフェクト！</span>`;
             sc.style.color = '#ffd';
-        } else if (score >= 2) {
-            sc.innerHTML = `✅ ${score} / 3<br><span style="font-size:18px;color:#9f9">よくできました！</span>`;
-            sc.style.color = '#9f9';
         } else {
-            sc.innerHTML = `📚 ${score} / 3<br><span style="font-size:18px;color:#fa9">もう一度挑戦しよう！</span>`;
+            sc.innerHTML = `📚 ${score} / 1<br><span style="font-size:18px;color:#fa9">もう一度挑戦しよう！</span>`;
             sc.style.color = '#fa9';
         }
 
