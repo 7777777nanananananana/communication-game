@@ -31,7 +31,7 @@ body {
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
-    padding: 12mm 14mm 10mm;
+    padding: 9mm 12mm 7mm;
     box-sizing: border-box;
     box-shadow: 0 2px 16px rgba(0,0,0,0.25);
 }
@@ -45,7 +45,7 @@ body {
 
 .format-row {
     font-size: 9pt;
-    margin-bottom: 6mm;
+    margin-bottom: 3mm;
     color: #111;
 }
 .format-row label { margin-right: 10px; }
@@ -73,7 +73,7 @@ body {
     border: 1.2px solid #555;
     vertical-align: top;
     padding: 0;
-    height: 58mm;
+    height: 54mm;
 }
 
 .td-visual {
@@ -105,30 +105,30 @@ body {
 }
 
 .hosoku {
-    margin-top: 4mm;
+    margin-top: 2mm;
     font-size: 8.5pt;
-    line-height: 1.7;
+    line-height: 1.6;
     color: #111;
 }
 .hosoku-label {
     font-weight: bold;
     font-size: 9pt;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 .hosoku-body {
     border: 1px solid #aaa;
     border-radius: 3px;
-    padding: 5px 8px;
-    min-height: 14mm;
+    padding: 4px 8px;
+    min-height: 10mm;
     background: #fafafa;
     font-size: 8.5pt;
-    line-height: 1.7;
+    line-height: 1.6;
 }
 
 @media print {
     @page { size: A4; margin: 0; }
     body   { background: white; padding: 0; }
-    .page  { box-shadow: none; width: 100%; }
+    .page  { box-shadow: none; width: 100%; min-height: unset; height: 297mm; overflow: hidden; }
     .print-btn { display: none; }
 }
 </style>
