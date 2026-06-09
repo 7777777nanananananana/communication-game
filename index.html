@@ -3,630 +3,302 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>コミュニケーション道場 〜Uさんの挑戦〜</title>
+<title>絵コンテ〜コミュニケーション改善〜</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
-    font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
-    background: #0a0a0f;
-    color: #fff;
-    height: 100vh;
-    overflow: hidden;
-    user-select: none;
+    font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+    background: #e8e8e8;
+    margin: 0;
+    padding: 24px 16px;
 }
 
-#game { width: 100%; height: 100vh; position: relative; }
-
-.screen {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.screen.active { display: flex; }
-
-/* ===== タイトル画面 ===== */
-#title-screen { background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 50%, #0a1a2a 100%); }
-
-.stars { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
-.star {
-    position: absolute; background: white; border-radius: 50%;
-    animation: twinkle var(--dur) infinite;
-}
-@keyframes twinkle {
-    0%,100% { opacity: 0.1; }
-    50% { opacity: 0.9; }
-}
-
-.title-wrap { text-align: center; z-index: 1; }
-.title-badge {
-    display: inline-block;
-    font-size: 11px; letter-spacing: 4px; color: #6af;
-    border: 1px solid #6af; padding: 4px 14px; border-radius: 20px;
-    margin-bottom: 16px; text-transform: uppercase;
-}
-.title-main {
-    font-size: 44px; font-weight: 700; margin-bottom: 8px;
-    background: linear-gradient(135deg, #fff 30%, #adf);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.title-sub { font-size: 20px; color: #fa9; margin-bottom: 36px; }
-
-.title-card {
-    max-width: 520px; margin: 0 auto 36px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(100,150,255,0.2);
-    border-radius: 12px; padding: 22px 28px;
-    font-size: 14px; line-height: 1.9; color: #bbb;
-    text-align: left;
-}
-.title-card strong { color: #fff; }
-.title-card .meme-tag {
-    display: inline-block;
-    background: rgba(255,150,80,0.15);
-    border: 1px solid rgba(255,150,80,0.4);
-    color: #fa9; border-radius: 4px;
-    padding: 1px 7px; font-size: 12px;
-}
-.title-card .good-tag {
-    display: inline-block;
-    background: rgba(100,255,100,0.1);
-    border: 1px solid rgba(100,255,100,0.3);
-    color: #9f9; border-radius: 4px;
-    padding: 1px 7px; font-size: 12px;
-}
-
-.start-btn {
-    padding: 16px 56px; font-size: 18px; font-weight: 700;
-    background: linear-gradient(135deg, #1a3060, #102040);
-    border: 2px solid #6af; border-radius: 40px;
-    color: #fff; cursor: pointer; transition: all 0.2s;
+.print-btn {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 12px 32px;
+    background: #1a3a6b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
     font-family: inherit;
-}
-.start-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(100,150,255,0.3); }
-
-/* ===== シーン画面 ===== */
-.scene-bg {
-    position: absolute; width: 100%; height: 100%;
-    transition: background 0.8s ease;
-}
-
-.hud {
-    position: absolute; top: 0; left: 0; right: 0;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 20px;
-    background: rgba(0,0,10,0.6);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    z-index: 10;
-}
-.scene-label { font-size: 13px; color: rgba(255,255,255,0.5); }
-.progress-dots { display: flex; gap: 8px; align-items: center; }
-.dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(255,255,255,0.2); transition: all 0.4s;
-}
-.dot.active { background: #6af; box-shadow: 0 0 8px #6af; }
-.dot.done { background: #6f6; }
-.score-hud { font-size: 13px; color: rgba(255,255,255,0.6); }
-.score-hud span { color: #6f6; font-weight: 700; }
-
-.location-tag {
-    position: absolute; top: 58px; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,30,0.85); border: 1px solid rgba(100,150,255,0.3);
-    border-radius: 20px; padding: 6px 18px;
-    font-size: 13px; color: #adf; white-space: nowrap; z-index: 10;
-}
-
-/* キャラクターエリア */
-.char-area {
-    position: absolute; bottom: 195px; width: 100%;
-    display: flex; justify-content: space-around; align-items: flex-end;
-    padding: 0 8%;
-}
-.char-box { text-align: center; transition: all 0.3s; }
-.char-emoji { font-size: 90px; display: block; transition: all 0.3s; }
-.char-name { font-size: 12px; color: #888; margin-top: 4px; }
-.char-box.speaking .char-emoji {
-    transform: scale(1.12);
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));
-}
-.char-box.dim .char-emoji { filter: brightness(0.3) saturate(0.3); }
-
-/* 台詞ボックス */
-.dialogue-box {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 188px;
-    background: rgba(0,0,18,0.93);
-    border-top: 2px solid rgba(100,150,255,0.35);
-    padding: 16px 28px 14px;
-    display: flex; flex-direction: column;
     cursor: pointer;
+    transition: background 0.2s;
 }
-.spk-name {
-    font-size: 15px; font-weight: 700; color: #6af;
-    padding: 3px 12px; margin-bottom: 8px;
-    background: rgba(100,150,255,0.12);
-    border-left: 3px solid #6af;
+.print-btn:hover { background: #2a5a9b; }
+
+/* A4ページ */
+.page {
+    background: white;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 14mm 16mm 12mm;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    box-sizing: border-box;
+}
+
+/* ヘッダー */
+.header {
+    text-align: center;
+    border-bottom: 2.5px solid #1a3a6b;
+    padding-bottom: 5mm;
+    margin-bottom: 6mm;
+}
+.title {
+    font-size: 15pt;
+    font-weight: bold;
+    margin: 0 0 3px;
+    color: #1a1a1a;
+}
+.subtitle {
+    font-size: 9pt;
+    color: #555;
+    margin: 0;
+}
+
+/* テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    line-height: 1.5;
+}
+th {
+    background: #1a3a6b;
+    color: white;
+    padding: 5px 7px;
+    text-align: center;
+    font-size: 9pt;
+    border: 1px solid #1a3a6b;
+}
+td {
+    border: 1px solid #aaa;
+    padding: 6px 7px;
+    vertical-align: top;
+}
+
+/* 列幅 */
+.col-num  { width: 9mm;  text-align: center; font-weight: bold; font-size: 11pt; background: #f0f2f5; }
+.col-place{ width: 17mm; text-align: center; font-size: 8pt; color: #444; }
+.col-vis  { width: 26mm; text-align: center; }
+.col-dlg  { /* 自動 */ }
+.col-dir  { width: 42mm; font-size: 8pt; }
+
+.emoji-big   { font-size: 20pt; display: block; line-height: 1.2; }
+.emoji-label { font-size: 7pt; color: #666; }
+
+.spk { font-weight: bold; }
+
+/* 行カラー */
+.r-setup  td { background: #ffffff; }
+.r-inner  td { background: #fffdf0; }
+.r-bad    td { background: #fff5f5; }
+.r-fail   td { background: #fff0f0; }
+.r-trans  td { background: #f0f0ff; text-align: center; font-style: italic; color: #555; padding: 5px; }
+.r-good   td { background: #f0fff4; }
+.r-win    td { background: #e6ffe8; }
+
+/* バッジ */
+.badge {
     display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 7.5pt;
+    font-weight: bold;
+    margin-bottom: 3px;
 }
-.spk-name.internal {
-    color: #fa9; border-color: #fa9;
-    background: rgba(255,160,80,0.1); font-style: italic;
-}
-.dlg-text {
-    font-size: 17px; line-height: 1.75; color: #e8e8e8; flex: 1;
-    white-space: pre-wrap;
-}
-.dlg-text.internal { color: #fa9; font-style: italic; }
-.click-hint {
-    position: absolute; bottom: 12px; right: 18px;
-    font-size: 11px; color: rgba(255,255,255,0.35);
-    animation: blink 1.2s infinite;
-}
-@keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:1} }
+.b-bad  { background: #fde; border: 1px solid #f88; color: #b00; }
+.b-good { background: #dfd; border: 1px solid #6c6; color: #050; }
+.b-info { background: #def; border: 1px solid #8ae; color: #035; }
 
-/* 選択肢 */
-.choice-overlay {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 18px 24px;
-    background: rgba(0,0,18,0.96);
-    border-top: 2px solid rgba(100,150,255,0.35);
+/* フッター */
+.footer {
+    margin-top: 5mm;
+    border: 1.5px solid #1a3a6b;
+    border-radius: 5px;
+    padding: 4mm 5mm;
+    background: #f4f7ff;
 }
-.choice-q {
-    font-size: 16px; font-weight: 700; color: #adf;
-    text-align: center; margin-bottom: 14px;
+.footer-title {
+    font-weight: bold;
+    font-size: 9.5pt;
+    color: #1a3a6b;
+    margin-bottom: 4px;
 }
-.choice-btns { display: flex; gap: 14px; }
-.choice-btn {
-    flex: 1; padding: 14px 16px; border: 2px solid;
-    border-radius: 10px; cursor: pointer; background: transparent;
-    color: #fff; font-family: inherit; text-align: left;
-    transition: all 0.2s; line-height: 1.5;
+.footer-body {
+    font-size: 8.5pt;
+    line-height: 1.7;
 }
-.choice-btn.bad  { border-color: rgba(255,100,100,0.6); }
-.choice-btn.bad:hover  { background: rgba(255,80,80,0.15); transform: translateY(-2px); border-color: #f66; }
-.choice-btn.good { border-color: rgba(100,255,100,0.6); }
-.choice-btn.good:hover { background: rgba(80,255,80,0.12); transform: translateY(-2px); border-color: #6f6; }
-.btn-label { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-.btn-sub   { font-size: 12px; opacity: 0.6; }
-.bad  .btn-label { color: #f99; }
-.good .btn-label { color: #9f9; }
 
-/* 結果パネル */
-.result-panel {
-    position: absolute;
-    top: 50%; left: 50%; transform: translate(-50%, -50%);
-    background: rgba(0,0,18,0.97);
-    border: 2px solid; border-radius: 14px;
-    padding: 32px 36px; max-width: 600px; width: 92%;
-    text-align: center; z-index: 20;
-}
-.result-panel.bad  { border-color: #f66; }
-.result-panel.good { border-color: #6f6; }
-.res-icon  { font-size: 56px; margin-bottom: 12px; }
-.res-title { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
-.bad  .res-title { color: #f66; }
-.good .res-title { color: #6f6; }
-.res-text { font-size: 14px; line-height: 1.8; color: #ccc; margin-bottom: 16px; white-space: pre-wrap; }
-.res-tip {
-    background: rgba(100,220,100,0.07);
-    border: 1px solid rgba(100,220,100,0.25);
-    border-radius: 8px; padding: 12px 16px;
-    font-size: 13px; color: #9f9;
-    text-align: left; margin-bottom: 18px; line-height: 1.7;
-}
-.res-btn {
-    padding: 12px 32px; font-size: 15px; font-weight: 700;
-    border: 2px solid #6af; border-radius: 30px;
-    background: transparent; color: #6af;
-    cursor: pointer; transition: all 0.2s; font-family: inherit;
-}
-.res-btn:hover { background: rgba(100,150,255,0.18); }
-
-/* ===== エンド画面 ===== */
-#end-screen { background: linear-gradient(135deg, #080f08 0%, #0a160a 50%, #0f1a0a 100%); }
-
-.end-wrap {
-    text-align: center; z-index: 1;
-    max-width: 680px; padding: 20px; width: 95%;
-}
-.end-title { font-size: 34px; font-weight: 700; margin-bottom: 6px; }
-.end-score {
-    font-size: 52px; font-weight: 700;
-    margin: 16px 0;
-}
-.tips-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px; padding: 20px 24px; text-align: left;
-    margin: 16px 0;
-}
-.tips-heading { font-weight: 700; color: #fff; font-size: 15px; margin-bottom: 14px; }
-.tip-row { display: flex; gap: 12px; margin-bottom: 13px; align-items: flex-start; }
-.tip-num {
-    background: #6af; color: #000;
-    width: 22px; height: 22px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 12px; flex-shrink: 0; margin-top: 2px;
-}
-.tip-body { font-size: 13px; line-height: 1.65; color: #bbb; }
-.tip-body strong { color: #adf; }
-.end-msg { font-size: 15px; color: #9f9; margin: 14px 0; line-height: 1.8; }
-.replay-btn {
-    padding: 11px 30px; border: 2px solid rgba(100,150,255,0.6);
-    border-radius: 24px; background: transparent;
-    color: #6af; font-size: 14px; cursor: pointer;
-    transition: all 0.2s; font-family: inherit;
-}
-.replay-btn:hover { background: rgba(100,150,255,0.15); }
-
-/* フェードオーバーレイ */
-#fade {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000; opacity: 0; pointer-events: none;
-    transition: opacity 0.4s; z-index: 100;
+/* 印刷時 */
+@media print {
+    @page { size: A4; margin: 0; }
+    body   { background: white; padding: 0; }
+    .page  { box-shadow: none; width: 100%; min-height: auto; }
+    .print-btn { display: none; }
 }
 </style>
 </head>
 <body>
-<div id="game">
 
-<!-- フェードオーバーレイ -->
-<div id="fade"></div>
+<button class="print-btn" onclick="window.print()">🖨️　PDFとして保存（印刷）</button>
 
-<!-- ===== タイトル画面 ===== -->
-<div class="screen active" id="title-screen">
-    <div class="stars" id="stars"></div>
-    <div class="title-wrap">
-        <div class="title-badge">Communication Game</div>
-        <div class="title-main">コミュニケーション道場</div>
-        <div class="title-sub">〜 U さんの挑戦 〜</div>
-        <div class="title-card">
-            <strong>Uさん</strong>は少しASDっぽい特性があり、緊張すると<br>
-            <span class="meme-tag">某ネット有名人の語録</span> でコミュニケーションをとってしまいます。<br><br>
-            しかし、フォーマルな場ではそれは通用しません。<br><br>
-            あなたはUさんを助けて、<span class="good-tag">場に応じた適切な返答</span> を<br>
-            選んであげてください！
+<div class="page">
+
+    <div class="header">
+        <div class="title">コミュニケーション改善 絵コンテ　〜Uさんの挑戦〜</div>
+        <div class="subtitle">課題：コミュニケーションが上手くいっていない状況の表現とその解決策の説明</div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="col-num">No.</th>
+                <th class="col-place">場所</th>
+                <th class="col-vis">場面（登場人物）</th>
+                <th class="col-dlg">セリフ</th>
+                <th class="col-dir">ト書き・説明</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- 1: 状況設定 -->
+            <tr class="r-setup">
+                <td class="col-num">1</td>
+                <td class="col-place">オフィス<br>会議室</td>
+                <td class="col-vis">
+                    <span class="emoji-big">👔🧑</span>
+                    <span class="emoji-label">上司・Uさん</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">上司：</span>「今月の新企画について、Uさんから提案があると聞きました。どうぞ。」
+                </td>
+                <td class="col-dir">
+                    <span class="badge b-info">状況設定</span><br>
+                    月次企画会議。上司がUさんに発言を促す。
+                </td>
+            </tr>
+
+            <!-- 2: 心の声 -->
+            <tr class="r-inner">
+                <td class="col-num">2</td>
+                <td class="col-place">同</td>
+                <td class="col-vis">
+                    <span class="emoji-big">🧑💭</span>
+                    <span class="emoji-label">Uさん（心の声）</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">Uさん（心の声）：</span>「やばい…緊張する。いつもの語録で乗り切るか！」
+                </td>
+                <td class="col-dir">
+                    Uさんのモノローグ。ASD的特性から、緊張すると某ネット有名人の語録を使ってしまう。
+                </td>
+            </tr>
+
+            <!-- 3: 問題発言 -->
+            <tr class="r-bad">
+                <td class="col-num">3</td>
+                <td class="col-place">同</td>
+                <td class="col-vis">
+                    <span class="emoji-big">🧑</span>
+                    <span class="emoji-label">Uさん</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">Uさん：</span>「やらないか？」
+                </td>
+                <td class="col-dir">
+                    <span class="badge b-bad">❌ 問題場面</span><br>
+                    フォーマルな場で某ネット有名人の語録を使用。意図が全く伝わらない。
+                </td>
+            </tr>
+
+            <!-- 4: 反応 -->
+            <tr class="r-fail">
+                <td class="col-num">4</td>
+                <td class="col-place">同</td>
+                <td class="col-vis">
+                    <span class="emoji-big">👔😶</span>
+                    <span class="emoji-label">上司・同僚</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">上司：</span>「え……？」<br>
+                    <span class="spk">同僚：</span>「（ひそひそ）ちょっと、何言ってんの……？」
+                </td>
+                <td class="col-dir">
+                    上司・同僚が困惑。会議の雰囲気が悪化する。
+                </td>
+            </tr>
+
+            <!-- 5: 失敗 -->
+            <tr class="r-fail">
+                <td class="col-num">5</td>
+                <td class="col-place">同</td>
+                <td class="col-vis">
+                    <span class="emoji-big">👔😤</span>
+                    <span class="emoji-label">上司（注意）</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">上司：</span>「Uさん、ここは会議室ですよ。真剣にお願いします。」
+                </td>
+                <td class="col-dir">
+                    上司に注意される。信頼を失い、提案の機会も消滅。<br>→ コミュニケーション失敗
+                </td>
+            </tr>
+
+            <!-- 転換 -->
+            <tr class="r-trans">
+                <td colspan="5">▼　では、その場に応じた適切なコミュニケーションをとると…　▼</td>
+            </tr>
+
+            <!-- 6: 解決策 -->
+            <tr class="r-good">
+                <td class="col-num">6</td>
+                <td class="col-place">オフィス<br>会議室</td>
+                <td class="col-vis">
+                    <span class="emoji-big">🧑📋</span>
+                    <span class="emoji-label">Uさん</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">Uさん：</span>「ぜひ取り組ませていただきたいと思います。SNS活用によるマーケティング強化を提案します。詳細資料をご覧ください。」
+                </td>
+                <td class="col-dir">
+                    <span class="badge b-good">✅ 解決策</span><br>
+                    敬語＋具体的な内容で発言。資料も事前に準備。
+                </td>
+            </tr>
+
+            <!-- 7: 成功 -->
+            <tr class="r-win">
+                <td class="col-num">7</td>
+                <td class="col-place">同</td>
+                <td class="col-vis">
+                    <span class="emoji-big">👔😊</span>
+                    <span class="emoji-label">上司（好反応）</span>
+                </td>
+                <td class="col-dlg">
+                    <span class="spk">上司：</span>「具体的でわかりやすいですね。素晴らしい。では詳しく説明をお願いします。」
+                </td>
+                <td class="col-dir">
+                    上司が好意的に受け取る。<br>→ コミュニケーション成功
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <div class="footer-title">📌 解決策のポイント</div>
+        <div class="footer-body">
+            <strong>【問題】</strong>Uさんは緊張するとフォーマルな場でも某ネット有名人の語録を使ってしまい、意図が伝わらず信頼を失う。<br>
+            <strong>【対策】</strong>
+            ① <strong>その場に応じた敬語を使う</strong>（「〜させていただきます」「〜と思います」等）&emsp;
+            ② <strong>具体的な内容を添える</strong>（数字・資料・根拠）&emsp;
+            ③ <strong>事前に準備する</strong>（資料・想定問答）<br>
+            ASD的特性があっても、場面を意識した準備と言葉の選択により、適切なコミュニケーションが可能になる。
         </div>
-        <button class="start-btn" onclick="startGame()">▶ ゲームスタート</button>
     </div>
-</div>
-
-<!-- ===== シーン画面 ===== -->
-<div class="screen" id="scene-screen">
-    <div class="scene-bg" id="scene-bg"></div>
-
-    <div class="hud">
-        <div class="scene-label" id="scene-label">シーン1</div>
-        <div class="progress-dots" id="progress-dots"></div>
-        <div class="score-hud">スコア <span id="score-val">0</span> / 1</div>
-    </div>
-
-    <div class="location-tag" id="location-tag"></div>
-    <div class="char-area" id="char-area"></div>
-
-    <div class="dialogue-box" id="dlg-box" onclick="handleClick()">
-        <div class="spk-name" id="spk-name"></div>
-        <div class="dlg-text" id="dlg-text"></div>
-        <div class="click-hint">クリックして続ける ▼</div>
-    </div>
-
-    <div class="choice-overlay" id="choice-overlay" style="display:none">
-        <div class="choice-q" id="choice-q"></div>
-        <div class="choice-btns" id="choice-btns"></div>
-    </div>
-
-    <div class="result-panel" id="result-panel" style="display:none">
-        <div class="res-icon" id="res-icon"></div>
-        <div class="res-title" id="res-title"></div>
-        <div class="res-text" id="res-text"></div>
-        <div class="res-tip" id="res-tip" style="display:none"></div>
-        <button class="res-btn" id="res-btn"></button>
-    </div>
-</div>
-
-<!-- ===== エンド画面 ===== -->
-<div class="screen" id="end-screen">
-    <div class="end-wrap">
-        <div class="end-title">🎊 ゲームクリア！</div>
-        <div class="end-score" id="end-score"></div>
-        <div class="tips-box" id="tips-box"></div>
-        <div class="end-msg">
-            場に応じたコミュニケーションを心掛けることで、<br>
-            Uさんの人間関係はぐっと良くなりました！
-        </div>
-        <button class="replay-btn" onclick="restartGame()">もう一度プレイする</button>
-    </div>
-</div>
 
 </div>
-
-<script>
-/* ========== ゲームデータ ========== */
-const SCENES = [
-  {
-    title: "シーン1：ビジネス会議",
-    location: "📍 オフィスの会議室　月次企画会議",
-    bg: "linear-gradient(180deg,#071830 0%,#050d20 65%,#030810 100%)",
-    chars: { L: { emoji:"👔", name:"上司" }, R: { emoji:"🧑", name:"Uさん" } },
-    dialogues: [
-      { spk:"上司",       side:"L", text:"今月の新企画について、Uさんから提案があると聞きました。どうぞ。" },
-      { spk:"Uさん（心の声）", side:"R", text:"やばい…緊張する。どう言えばいいんだ…\nいつもの語録で乗り切るか！", internal:true },
-    ],
-    choiceQ: "⚡ Uさん、どう答える？",
-    choices: [
-      {
-        type:"bad", label:"「やらないか？」", sub:"某ネット有名人の語録でキメる",
-        after:[
-          { spk:"Uさん",  side:"R", text:"やらないか？" },
-          { spk:"上司",   side:"L", text:"え……？" },
-          { spk:"同僚",   side:"L", text:"（ひそひそ）ちょっと、何言ってんの……？" },
-          { spk:"上司",   side:"L", text:"Uさん、ここは会議室ですよ。真剣にお願いします。" },
-        ],
-        explain:"「やらないか」はネット上で有名な某人物の語録です。\nビジネスの場では全く意味が通じず、真剣さを欠いているという\n印象を与え、信頼を大きく失います。",
-        tip: null
-      },
-      {
-        type:"good", label:"「ぜひ取り組ませていただきます」", sub:"フォーマルな敬語で答える",
-        after:[
-          { spk:"Uさん", side:"R", text:"ぜひ取り組ませていただきたいと思います。SNS活用によるマーケティング強化を提案します。詳細資料をご覧ください。" },
-          { spk:"上司",  side:"L", text:"具体的でわかりやすいですね。資料も準備してきたんですか。" },
-          { spk:"Uさん", side:"R", text:"はい、数字のデータも用意しております。" },
-          { spk:"上司",  side:"L", text:"素晴らしい。ではご説明をお願いします。" },
-        ],
-        explain:"",
-        tip:"💡 ポイント：「〜させていただきます」などの敬語＋具体的な内容を合わせることで、真剣さと能力を同時にアピールできます。準備してきた資料があると更に説得力が増します。"
-      }
-    ]
-  },
-];
-
-/* ========== ゲーム状態 ========== */
-let sceneIdx = 0, dlgIdx = 0, score = 0;
-let phase = 'dlg'; // dlg / choice / after / result
-let chosen = null, afterIdx = 0;
-let typing = false, typeTimer = null, fullTxt = '';
-
-/* ========== 初期化 ========== */
-function initStars() {
-    const c = document.getElementById('stars');
-    for (let i = 0; i < 120; i++) {
-        const s = document.createElement('div');
-        s.className = 'star';
-        const sz = Math.random() * 2.5 + 0.5;
-        s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${(Math.random()*3+2).toFixed(1)}s`;
-        c.appendChild(s);
-    }
-}
-
-function showScreen(id) {
-    fade(0.6, () => {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        fade(0, null);
-    });
-}
-
-function fade(to, cb) {
-    const el = document.getElementById('fade');
-    el.style.opacity = to;
-    el.style.pointerEvents = to > 0 ? 'all' : 'none';
-    if (cb) setTimeout(cb, 420);
-}
-
-function startGame() {
-    sceneIdx = 0; score = 0;
-    showScreen('scene-screen');
-    setTimeout(() => loadScene(), 450);
-}
-
-function restartGame() {
-    sceneIdx = 0; score = 0;
-    showScreen('scene-screen');
-    setTimeout(() => loadScene(), 450);
-}
-
-/* ========== シーン ========== */
-function loadScene() {
-    const s = SCENES[sceneIdx];
-    dlgIdx = 0; phase = 'dlg'; chosen = null; afterIdx = 0;
-
-    document.getElementById('scene-bg').style.background = s.bg;
-    document.getElementById('scene-label').textContent = s.title;
-    document.getElementById('location-tag').textContent = s.location;
-    updateDots(); updateScore();
-
-    document.getElementById('choice-overlay').style.display = 'none';
-    document.getElementById('result-panel').style.display = 'none';
-    document.getElementById('dlg-box').style.display = 'flex';
-
-    renderChars(null);
-    showDlg(s.dialogues[0]);
-}
-
-function updateDots() {
-    const el = document.getElementById('progress-dots');
-    el.innerHTML = '';
-    SCENES.forEach((_, i) => {
-        const d = document.createElement('div');
-        d.className = 'dot' + (i < sceneIdx ? ' done' : i === sceneIdx ? ' active' : '');
-        el.appendChild(d);
-    });
-}
-
-function updateScore() {
-    document.getElementById('score-val').textContent = score;
-}
-
-function renderChars(speakSide) {
-    const s = SCENES[sceneIdx];
-    const area = document.getElementById('char-area');
-    area.innerHTML = '';
-    ['L', 'R'].forEach(side => {
-        const ch = s.chars[side];
-        const box = document.createElement('div');
-        box.className = 'char-box' +
-            (speakSide === side ? ' speaking' : speakSide !== null ? ' dim' : '');
-        box.innerHTML = `<span class="char-emoji">${ch.emoji}</span><div class="char-name">${ch.name}</div>`;
-        area.appendChild(box);
-    });
-}
-
-/* ========== タイプライター ========== */
-function typewrite(el, txt, done) {
-    typing = true; fullTxt = txt; el.textContent = ''; let i = 0;
-    function step() {
-        if (i < txt.length) { el.textContent += txt[i++]; typeTimer = setTimeout(step, 28); }
-        else { typing = false; if (done) done(); }
-    }
-    step();
-}
-function skipType() {
-    if (typeTimer) clearTimeout(typeTimer);
-    typing = false;
-    document.getElementById('dlg-text').textContent = fullTxt;
-}
-
-/* ========== 台詞表示 ========== */
-function showDlg(d) {
-    const nameEl = document.getElementById('spk-name');
-    const textEl = document.getElementById('dlg-text');
-    nameEl.textContent = d.spk;
-    nameEl.className = 'spk-name' + (d.internal ? ' internal' : '');
-    textEl.className = 'dlg-text' + (d.internal ? ' internal' : '');
-    renderChars(d.side || null);
-    typewrite(textEl, d.text, null);
-}
-
-/* ========== クリック処理 ========== */
-function handleClick() {
-    if (typing) { skipType(); return; }
-    advancePhase();
-}
-
-function advancePhase() {
-    const s = SCENES[sceneIdx];
-    if (phase === 'dlg') {
-        dlgIdx++;
-        if (dlgIdx < s.dialogues.length) { showDlg(s.dialogues[dlgIdx]); }
-        else { showChoices(); }
-    } else if (phase === 'after') {
-        afterIdx++;
-        const arr = chosen.after;
-        if (afterIdx < arr.length) { showDlg(arr[afterIdx]); }
-        else { showResult(); }
-    }
-}
-
-/* ========== 選択肢 ========== */
-function showChoices() {
-    const s = SCENES[sceneIdx];
-    document.getElementById('dlg-box').style.display = 'none';
-    renderChars(null);
-    document.getElementById('choice-q').textContent = s.choiceQ;
-    const btns = document.getElementById('choice-btns');
-    btns.innerHTML = '';
-    s.choices.forEach((c, i) => {
-        const b = document.createElement('button');
-        b.className = `choice-btn ${c.type}`;
-        b.innerHTML = `<div class="btn-label">${c.label}</div><div class="btn-sub">${c.sub}</div>`;
-        b.onclick = () => selectChoice(i);
-        btns.appendChild(b);
-    });
-    document.getElementById('choice-overlay').style.display = 'block';
-    phase = 'choice';
-}
-
-function selectChoice(idx) {
-    chosen = SCENES[sceneIdx].choices[idx];
-    document.getElementById('choice-overlay').style.display = 'none';
-    document.getElementById('dlg-box').style.display = 'flex';
-    phase = 'after'; afterIdx = 0;
-    showDlg(chosen.after[0]);
-}
-
-/* ========== 結果 ========== */
-function showResult() {
-    document.getElementById('dlg-box').style.display = 'none';
-    const panel  = document.getElementById('result-panel');
-    const icon   = document.getElementById('res-icon');
-    const title  = document.getElementById('res-title');
-    const text   = document.getElementById('res-text');
-    const tipEl  = document.getElementById('res-tip');
-    const btn    = document.getElementById('res-btn');
-
-    if (chosen.type === 'bad') {
-        panel.className = 'result-panel bad';
-        icon.textContent  = '😰';
-        title.textContent = 'コミュニケーション失敗！';
-        text.textContent  = chosen.explain;
-        tipEl.style.display = 'none';
-        btn.textContent = '💪 もう一度選ぶ';
-        btn.onclick = retryChoice;
-    } else {
-        score++; updateScore();
-        panel.className = 'result-panel good';
-        icon.textContent  = '🎉';
-        title.textContent = 'コミュニケーション成功！';
-        text.textContent  = '素晴らしい！場に応じた適切なコミュニケーションができました。';
-        tipEl.style.display = 'block';
-        tipEl.textContent  = chosen.tip;
-        if (sceneIdx < SCENES.length - 1) {
-            btn.textContent = '次のシーンへ →';
-            btn.onclick = nextScene;
-        } else {
-            btn.textContent = 'ゲームクリア！ 🎊';
-            btn.onclick = showEnd;
-        }
-    }
-    panel.style.display = 'block';
-    phase = 'result';
-}
-
-function retryChoice() {
-    document.getElementById('result-panel').style.display = 'none';
-    showChoices();
-}
-
-function nextScene() {
-    document.getElementById('result-panel').style.display = 'none';
-    sceneIdx++;
-    loadScene();
-}
-
-/* ========== エンド ========== */
-function showEnd() {
-    showScreen('end-screen');
-    setTimeout(() => {
-        const sc = document.getElementById('end-score');
-        if (score === 1) {
-            sc.innerHTML = `⭐ ${score} / 1 ⭐<br><span style="font-size:18px;color:#ff9">パーフェクト！</span>`;
-            sc.style.color = '#ffd';
-        } else {
-            sc.innerHTML = `📚 ${score} / 1<br><span style="font-size:18px;color:#fa9">もう一度挑戦しよう！</span>`;
-            sc.style.color = '#fa9';
-        }
-
-        const box = document.getElementById('tips-box');
-        box.innerHTML = '<div class="tips-heading">📋 今日のポイントまとめ</div>';
-        SCENES.forEach((s, i) => {
-            const good = s.choices.find(c => c.type === 'good');
-            const row = document.createElement('div');
-            row.className = 'tip-row';
-            row.innerHTML = `
-                <div class="tip-num">${i+1}</div>
-                <div class="tip-body"><strong>${s.title}</strong><br>
-                ${good.tip.replace('💡 ポイント：','')}</div>`;
-            box.appendChild(row);
-        });
-    }, 500);
-}
-
-/* ========== 起動 ========== */
-initStars();
-</script>
 </body>
 </html>
